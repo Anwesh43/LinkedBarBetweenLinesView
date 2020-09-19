@@ -20,12 +20,13 @@ val colors : Array<Int> = arrayOf(
         "#2196F3",
         "#FF5722"
 ).map({Color.parseColor(it)}).toTypedArray()
-val parts : Int = 3
+val parts : Int = 4
 val scGap : Float = 0.02f / parts
 val strokeFactor : Float = 90f
 val barSizeFactor : Float = 8.9f
 val backColor : Int = Color.parseColor("#BDBDBD")
 val delay : Long = 20
+val rot : Float = 90f
 
 fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
@@ -40,12 +41,12 @@ fun Canvas.drawBarBetweenLine(scale : Float, w: Float, h : Float, paint : Paint)
     val sf3 : Float = sf.divideScale(2, parts)
     save()
     translate(-w / 2, 0f)
-    drawRect(RectF(0f, -(barSize / 2)  * sf1, barSize, (barSize / 2) * sf1), paint)
+    drawRect(RectF(0f, -(barSize / 2)  * sf2, barSize, (barSize / 2) * sf2), paint)
     restore()
     for (j in 0..1) {
         save()
         translate(0f, -barSize / 2 + barSize * j)
-        drawLine(0f, 0f, -(w / 2) * sf2, 0f, paint)
+        drawLine(0f, 0f, -(w / 2) * sf1, 0f, paint)
         restore()
     }
     drawLine(0f, 0f, -(w / 2 - barSize) * sf3, 0f, paint)
@@ -54,9 +55,10 @@ fun Canvas.drawBarBetweenLine(scale : Float, w: Float, h : Float, paint : Paint)
 fun Canvas.drawBarBetweenLines(scale : Float, w : Float, h : Float, paint : Paint) {
     save()
     translate(w / 2, h / 2)
+    rotate(rot * scale.sinify().divideScale(parts - 1, parts))
     for (j in 0..1) {
         save()
-        translate(1f - 2 * j, 1f)
+        scale(1f - 2 * j, 1f)
         drawBarBetweenLine(scale, w, h, paint)
         restore()
     }
