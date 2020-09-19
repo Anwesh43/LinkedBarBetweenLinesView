@@ -223,4 +223,13 @@ class BarBetweenLinesView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : BarBetweenLinesView {
+            var view : BarBetweenLinesView = BarBetweenLinesView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
